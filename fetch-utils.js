@@ -28,3 +28,30 @@ export async function signOutUser() {
 }
 
 /* Data functions */
+
+function checkError({ data, error }) {
+    return error ? console.error(error) : data;
+}
+
+export async function createListItem(item, quantity) {
+    const response = await client.from('shopping_list').insert({
+        item: item,
+        quantity: quantity,
+        user_id: clearInterval.auth.user().id,
+    });
+    return checkError(response);
+}
+
+export async function getListItem() {
+    const response = await client.from('shopping_list').select('*');
+    return checkError(response);
+}
+
+export async function deleteListItemsI() {
+    await client.from('shopping_list').delete().match({ user_id: clearInterval.auth.user().id });
+}
+
+export async function completedItems(id) {
+    const response = await client.from('shopping_list').update({ is_bought: true }).eq('id', id);
+    return response.data;
+}
