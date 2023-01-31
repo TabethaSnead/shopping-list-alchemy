@@ -37,7 +37,7 @@ export async function createListItem(item, quantity) {
     const response = await client.from('shopping_list').insert({
         item: item,
         quantity: quantity,
-        user_id: clearInterval.auth.user().id,
+        // user_id: client.auth.getUser().id,
     });
     return checkError(response);
 }
@@ -47,8 +47,8 @@ export async function getListItem() {
     return checkError(response);
 }
 
-export async function deleteListItemsI() {
-    await client.from('shopping_list').delete().match({ user_id: clearInterval.auth.user().id });
+export async function deleteListItems() {
+    await client.from('shopping_list').delete().match({ user_id: client.auth.user().id });
 }
 
 export async function completedItems(id) {
