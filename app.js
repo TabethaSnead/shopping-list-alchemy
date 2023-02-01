@@ -1,22 +1,13 @@
 /* Imports */
 import { renderListItems } from './render-utils.js';
-import {
-    signInUser,
-    signUpUser,
-    signOutUser,
-    getUser,
-    createListItem,
-    getListItem,
-    deleteListItems,
-    completedItems,
-} from './fetch-utils.js';
+import { createListItem, getListItem, deleteListItems, completedItems } from './fetch-utils.js';
 // this will check if we have a user and set signout link if it exists
 
 /* Get DOM Elements */
 const shoppingListForm = document.getElementById('shopping-list-form');
 const itemsEl = document.getElementById('items-div');
 const deleteButton = document.getElementById('delete-button');
-const logoutButton = document.getElementById('logout-button');
+
 /* State */
 let listItemsArr = [];
 
@@ -27,6 +18,29 @@ shoppingListForm.addEventListener('submit', async (e) => {
     const item = data.get('item');
     const quantity = data.get('quantity');
     await createListItem(item, quantity);
+    await displayPosts();
+});
+
+window.addEventListener('load', async () => {
+    await displayPosts();
 });
 
 /* Display Functions */
+async function displayPosts() {
+    itemsEl.textContent = '';
+    const posts = await getListItem();
+    listItemsArr = posts;
+    for (let post of listItemsArr) {
+        const postsAdded = renderListItems(post);
+        postsAdded.addEventListener('click', async () => {
+            await completedItems(post.id);
+            await displayPosts();
+        });
+        itemsEl.append(postsAdded);
+    }
+}
+
+deleteButton.addEventListener('click', async () => {
+    await deleteListItems();
+    await displayPosts();
+});
