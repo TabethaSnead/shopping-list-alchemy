@@ -1,6 +1,13 @@
 /* Imports */
 import { renderListItems } from './render-utils.js';
-import { createListItem, getListItem, deleteListItems, completedItems } from './fetch-utils.js';
+import {
+    createListItem,
+    getListItem,
+    deleteListItems,
+    completedItems,
+    getUser,
+    signOutUser,
+} from './fetch-utils.js';
 // this will check if we have a user and set signout link if it exists
 
 /* Get DOM Elements */
@@ -12,6 +19,14 @@ const deleteButton = document.getElementById('delete-button');
 let listItemsArr = [];
 
 /* Events */
+const signOutLink = document.getElementById('sign-out-link');
+if (signOutLink) {
+    signOutLink.addEventListener('click', async () => {
+        // console.log('userjs');
+        await signOutUser();
+    });
+}
+
 shoppingListForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const data = new FormData(shoppingListForm);
@@ -22,6 +37,12 @@ shoppingListForm.addEventListener('submit', async (e) => {
 });
 
 window.addEventListener('load', async () => {
+    const user = await getUser();
+    console.log(user);
+    if (!user) {
+        window.location.href = './auth';
+    }
+
     await displayPosts();
 });
 
