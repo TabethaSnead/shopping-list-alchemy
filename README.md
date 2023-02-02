@@ -1,3 +1,5 @@
+![Wireframe of shopping-list-alchemy]('./assets/wireframe.png')
+
 ## The Golden Rule:
 
 🦸 🦸‍♂️ `Stop starting and start finishing.` 🏁
@@ -24,3 +26,28 @@ Additional considerations:
     -   What needs to live in a persistence layer?
 -   Is there some state we need to initialize?
 -   Ask: should any of this work be abstracted into functions? (i.e., is the work complicated? can it be reused?)
+
+## HTML
+
+auth-pages
+-2 forms
+
+shopping list page
+-display email on header
+-1 form
+-on submit const data = new FormData(formEl)
+.get(items).get(quantity)
+
+-   using new FormData send that data to supabase in new row
+
+-display data
+-get data from supabase
+-put data in state
+-clear DOM
+-redisplay list items
+
+-on click of item data will change to bought
+
+-   line through it
+    -only their own items
+    -redisplay data once bought
